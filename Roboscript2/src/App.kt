@@ -34,6 +34,9 @@ class App {
 
     // Returns the x and y dimensions of the grid, and the x and y coordinates of the 0,0 point
     private fun getDimensions(code: String): Array<Int> {
+        if (code == "")
+            return arrayOf(1, 1, 0, 0)
+
         var currX = 0
         var currY = 0
         var startX = currX // The 0 x point in the final grid
@@ -58,12 +61,12 @@ class App {
                 for (i in 0 until repeat) {
                     currX += directionX
                     currY += directionY
-                    if (currX < 0 && directionX < 0) startX += 1
-                    if (currY < 0 && directionY < 0) startY += 1
-                    if (currX > xDimensionPos) xDimensionPos = currX // Track the furthest we have moved in positive X direction
-                    if (currX < xDimensionNeg) xDimensionNeg = currX // Track the furthest we have moved in negative X direction
-                    if (currY > yDimensionPos) yDimensionPos = currY
-                    if (currY < yDimensionNeg) yDimensionNeg = currY
+                    if (currX < 0 && abs(currX) > startX && directionX < 0) startX += 1
+                    if (currY < 0 && abs(currY) > startY &&  directionY < 0) startY += 1
+                    if (currX >= xDimensionPos) xDimensionPos = currX + 1 // Track the furthest we have moved in positive X direction
+                    if (currX < xDimensionNeg && currX < 0) xDimensionNeg = currX // Track the furthest we have moved in negative X direction
+                    if (currY >= yDimensionPos) yDimensionPos = currY + 1
+                    if (currY < yDimensionNeg && currY < 0) yDimensionNeg = currY
                 }
             } else if (token == "L" || token == "R") {
                 for (i in 0 until repeat) {
@@ -74,10 +77,15 @@ class App {
             }
         }
 
-        return arrayOf(abs(xDimensionNeg) + xDimensionPos + 1, abs(yDimensionNeg) + yDimensionPos + 1, startX, startY)
+        return arrayOf(abs(xDimensionNeg) + xDimensionPos, abs(yDimensionNeg) + yDimensionPos, startX, startY)
     }
 
     private fun moveRobotOnGrid(code:String, grid: Array<Array<String>>, startX: Int, startY: Int) {
+        if (code == "") {
+            grid[0][0] = "*"
+            return
+        }
+
         var currX = startX
         var currY = startY
         var directionX = 1 // Facing right
@@ -88,6 +96,7 @@ class App {
 
         var token = ""
         var repeat = 0
+        grid[startY][startX] = "*"
         for (match in matches) {
             token = match.groupValues[1] // Token
             repeat = if(match.groupValues[2] != "") match.groupValues[2].toInt() else 1
@@ -101,7 +110,6 @@ class App {
                 }
             } else if (token == "L" || token == "R") {
                 for (i in 0 until repeat) {
-                    grid[currY][currX] = "*"
                     val dirPair = getNewDirection(directionX, directionY, token)
                     directionX = dirPair.first
                     directionY = dirPair.second
@@ -109,10 +117,6 @@ class App {
             }
         }
     }
-
-//    private fun navigateOnGrid(code: String, grid: Array<Array<String>>?): Array<Int> {
-//
-//    }
 
     private fun getNewDirection(currXOrientation: Int, currYOrientation: Int, turn: String): Pair<Int, Int> {
         var directionX = currXOrientation
@@ -141,6 +145,11 @@ class App {
     }
 
     fun main() {
-       System.out.print(execute("LF5R1F3R1F3R1F7"))
+        //System.out.print(execute(""))
+        //System.out.print(execute("FFFFF"))
+        //System.out.print(execute("FFFFFLFFFFFLFFFFFLFFFFFL"))
+
+        System.out.print(execute("LFFFFFRFFFRFFFRFFFFFFF"))
+        System.out.print(execute("LF5RF3RF3RF7"))
     }
 }
