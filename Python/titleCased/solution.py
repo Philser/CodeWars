@@ -5,7 +5,7 @@ def title_case(title, minor_words=""):
     
     minor_words = minor_words.lower().split(" ")
     
-    title = title.split(" ");
+    title = title.split(" ")
     title_cased = ""
     
     for pos in range(0, len(title)):

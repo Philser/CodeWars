@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "allowJs": true,
+    "moduleDetection": "force",
+    "isolatedModules": false,
+
+    "verbatimModuleSyntax": true, // One day
+    "noUncheckedIndexedAccess": true, // One day
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+
+    // "noEmit": true,
+    "outDir": "dist",
+    "module": "ES2020",
+
+    "rootDir": ".",
+
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022"]
+  }
+}
