@@ -39,20 +39,6 @@ export function dirReduc2(arr: string[]): string[] {
   };
 
   let stack = [arr[0]];
-  return arr.reduce((red, currDir) => {
-    if (!red.length) {
-      red.push(currDir);
-      return red;
-    }
-
-    if (red[red.length - 1] === opposites[currDir]) {
-      red.pop();
-    } else {
-      red.push(currDir);
-    }
-
-    return red;
-  }, []);
   for (let i = 1; i < arr.length; i++) {
     if (arr[i] === opposites[stack[stack.length - 1]]) {
       stack.pop();
